@@ -1,7 +1,7 @@
-from django.conf.urls import url
+from django.urls import path
 from invoiceApp import views
 
 urlpatterns = [
-    url('invoice/',views.invoice_list),
-    url('<int:pk>/',views.invoice_detail)
+    path('invoice/',views.invoice_list),
+    path('invoice/<int:pk>/',views.invoice_detail)
 ]

@@ -18,12 +18,23 @@ def invoice_list(request):
     return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET'])
+@api_view(['GET','PUT'])
 def invoice_detail(request,pk):
     # invoice=get_object_or_404(Invoice,pk=pk)
     try:
         invoice=Invoice.objects.get(pk=pk)
     except Invoice.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    serializer=InvoiceSerializer(invoice)
-    return Response(serializer.data)
+    if request.method=="GET":
+        serializer=InvoiceSerializer(invoice)
+        return Response(serializer.data)
+    
+    elif request.method == "PUT":
+        serializer=InvoiceSerializer(invoice,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
+    
