@@ -4,12 +4,19 @@ from rest_framework.response import Response
 from invoiceApp.models import Invoice
 from invoiceApp.serializers import InvoiceSerializer
 from django.shortcuts import get_object_or_404
-@api_view(['GET'])
+
+@api_view(['GET','POST'])
 def invoice_list(request):
     if request.method=="GET":
         invoices=Invoice.objects.all()
         serializer=InvoiceSerializer(invoices,many=True)
         return Response(serializer.data)
+    serializer=InvoiceSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data,status=status.HTTP_201_CREATED)
+    return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET'])
 def invoice_detail(request,pk):
