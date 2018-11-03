@@ -18,7 +18,7 @@ def invoice_list(request):
     return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET','PUT'])
+@api_view(['GET','PUT','DELETE'])
 def invoice_detail(request,pk):
     # invoice=get_object_or_404(Invoice,pk=pk)
     try:
@@ -35,6 +35,8 @@ def invoice_detail(request,pk):
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-
+    if request.method=="DELETE":
+        invoice.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     
