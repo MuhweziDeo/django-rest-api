@@ -5,4 +5,4 @@ class InvoiceSerializer(serializers.ModelSerializer):
     # handles converting model to json format
     class Meta:
         model=Invoice
-        fields=('name','description','total','paid')
+        fields=('id','name','description','total','paid')
